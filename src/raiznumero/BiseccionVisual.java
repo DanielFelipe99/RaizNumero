@@ -19,29 +19,30 @@ public class BiseccionVisual extends javax.swing.JFrame {
         this.setTitle("Ingreso de datos");
         this.setLocationRelativeTo(BiseccionVisual.this);
         this.setResizable(false);
-        String Titulo[]={"Iteracion","a","b","c","f(a)","f(b)","f(c)","Error"};
+        String Titulo[]={"Iteracion","a","b","xr","f(a)","f(b)","f(x)","Error"};
         tabla = new DefaultTableModel();
         tabla.setColumnIdentifiers(Titulo);
         VentanaResultados.jTable_Proceso.setEnabled(false);
         VentanaResultados.jTable_Proceso.setModel(tabla);
     }
     
-        private double f(double x){
-        double f_x = Math.pow(x, 2)+x-1;
+        private double evaluarf(double x){
+        double f_x = Math.pow(x, 4)+ 3*(Math.pow(x, 3)) - 2;
         return f_x;
        
     }
     
-    private double evaluarf(double x){
-        double f_x;
-        j = new JEP();
-        j.addStandardFunctions();
-        j.addStandardConstants();
-        j.addConstant("x", x);
-        j.parseExpression(jTxtFuncion.getText());
-        f_x = j.getValue();
-        return f_x;
-    }
+        
+    //private double evaluarf(double x){
+        //double f_x;
+        //j = new JEP();
+        //j.addStandardFunctions();
+        //j.addStandardConstants();
+        //j.addConstant("x", x);
+        //j.parseExpression(jTxtFuncion.getText());
+        //f_x = j.getValue();
+        //return f_x;
+    //}
  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -66,6 +67,7 @@ public class BiseccionVisual extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("SimSun-ExtB", 0, 12)); // NOI18N
         jLabel2.setText("Metodo Biseccion");
 
+        jTxtFuncion.setText("x^4+3x^3-2");
         jTxtFuncion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTxtFuncionActionPerformed(evt);
@@ -179,7 +181,7 @@ public class BiseccionVisual extends javax.swing.JFrame {
     }//GEN-LAST:event_IntervaloBActionPerformed
 
     private void jBtnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCalcularActionPerformed
-        double a,b,c;
+        double a,b,xr;
         double c_m = 0;
         double error=1;
         double errorR = Double.parseDouble(jTxtError.getText());
@@ -191,25 +193,25 @@ public class BiseccionVisual extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(rootPane, "La raiz no ha sido encontrada en el intervalo");
         }else{
             do {                
-                c = (a+b)/2;
-                error = Math.abs((c-c_m)/c)*100; 
-                c_m = c;
+                xr = (a+b)/2;
+                error = Math.abs((xr-c_m)/xr)*100; 
+                c_m = xr;
                 
                 String datoIteracion = String.valueOf(iteracion);
                 String datoA = String.valueOf(a);
                 String datoB = String.valueOf(b);
-                String datoC = String.valueOf(c);
+                String datoC = String.valueOf(xr);
                 String datofa = String.valueOf(evaluarf(a));
                 String datofb = String.valueOf(evaluarf(b));
-                String datofc = String.valueOf(evaluarf(c));
+                String datofc = String.valueOf(evaluarf(xr));
                 String datoERROR = String.valueOf(evaluarf(error));
                 String datos [] = {datoIteracion,datoA,datoB,datoC,datofa,datofb,datofc,datoERROR};
                 tabla.addRow(datos);
                 
-                if(evaluarf(a)*evaluarf(c) > 0){
-                    a = c;
+                if(evaluarf(a)*evaluarf(xr) > 0){
+                    a = xr;
                 }else{
-                    b = c;
+                    b = xr;
                 }
                 iteracion++;
             } while (errorR < error);
